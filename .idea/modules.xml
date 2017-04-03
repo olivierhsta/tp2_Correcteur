@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Correcteur.iml" filepath="$PROJECT_DIR$/.idea/Correcteur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tp2_Correcteur/.idea/Correcteur.iml" filepath="$PROJECT_DIR$/../tp2_Correcteur/.idea/Correcteur.iml" />
     </modules>
   </component>
 </project>
