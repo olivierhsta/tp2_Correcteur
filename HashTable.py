@@ -5,7 +5,6 @@ class HashTable:
     _EMPTY = None
 
     def __init__(self, len_dict):
-        self._len_dict = len_dict
         self._table = [self._EMPTY] * (len_dict * 2)
 
     def _is_available(self, index):
@@ -15,28 +14,48 @@ class HashTable:
         i = self._hashing(key)
         avail = None
         while True:
-            if self[i] == key:
-                return True, self._table[i]
-            elif avail is None and self[i] is self._DELETED:
+            if self._table[i] == key:
+                return True, i
+            elif avail is None and self._table[i] is self._DELETED:
                 avail = i
-            else:
-                return (False, self[avail]) if avail is not None else (False, self[i])
-            i = (i + 1) % len(self)
+            elif self._table[i] is self._EMPTY:
+                return (False, avail) if avail is not None else (False, i)
+            i = (i + 1) % len(self._table)
 
     def _hashing(self, key):
         index = ord(key[0])
         for char in key[1:]:
-            index = ord(char) + (33 * index)
-        return index % len(self)
+            index = ord(char) + (39 * index)
+        return index % len(self._table)
 
     def __len__(self):
-        return self._len_dict
+        counter = 0
+        for word in self._table:
+            if word is not None:
+                counter += 1
+        return counter
 
     def __getitem__(self, key):
-        return self._table[self._hashing(key)]
+        presence, index = self._search_for(key)
+        if presence:
+            return self._table[index]
+        else:
+            raise KeyError("La clef n'est pas présente dans la table")
 
     def __setitem__(self, key, value):
-        self._table[self._hashing(key)] = value
+        present, index = self._search_for(key)
+        self._table[index] = value
 
-    def __del__(self, key):
-        self._table[self._hashing(key)] = self._DELETED
+    # def __del__(self, key):
+    #     self._table[self._hashing(key)] = self._DELETED
+
+    def __iter__(self):
+        for case in self._table:
+            if case is not self._EMPTY:
+                yield case
+
+    def __str__(self):
+        str_return = ''
+        for word in self._table:
+            str_return += str(word) + '\n'
+        return str_return
