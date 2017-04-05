@@ -10,7 +10,9 @@ def read_dict():
     # os.stat("dict.txt").st_size retourne le nombre de bits (aka nombre de caracteres) dans le fichier.
     # En divisant, par 6, on couvre toutes les langues puisque le dictionnaire
     # aura une longueur environ egale a 1/6 des caracteres du fichier ( * 2 dans __init__() de HashTable.py)
-    dictionary = HashTable(os.stat("dict.txt").st_size // 6)
+    # dictionary = HashTable(os.stat("dict.txt").st_size // 6)
+    dictionary = HashTable(len(fr.readlines()))
+    fr.seek(0)
     for line in fr:
         line = line.strip()
         dictionary[line] = line

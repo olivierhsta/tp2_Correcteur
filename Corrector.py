@@ -7,15 +7,15 @@ class Corrector:
         self._dictionary = dictionary
 
     def correct(self, wrong_str):
-        wrong_str = self._verify(wrong_str.lower())
+        wrong_str = self._verify(wrong_str)
         word_list = wrong_str.split(' ')
         good_str = ''
         for word in word_list:
             try:
-                self._dictionary[word]
+                self._dictionary[word.lower()]
                 good_str += word + ' '
             except KeyError:
-                str_replace = word + ' ('
+                str_replace = '[' + word  + ']' + ' ('
                 for replacement in self._replace(word):
                     str_replace += replacement + ', '
                 if str_replace[-2:] != ' (':
@@ -25,19 +25,19 @@ class Corrector:
                 good_str += str_replace
         return good_str
 
-    def _verify(self, wrong_str):
-        wrong_str = list(wrong_str)
+    def _verify(self, sentence):
+        sentence = list(sentence)
         punctuation = ('.', ',', ':', ';', '!', '?', "'", '"', ' ')
-        for i in range(len(wrong_str)):
-            if wrong_str[i] in punctuation:
-                if i == 0 or i == len(wrong_str) -1:
-                    wrong_str[i] = ''
-                elif wrong_str[i-1] in punctuation\
-                        or wrong_str[i+1] in punctuation:
-                    wrong_str[i] = ''
+        for i in range(len(sentence)):
+            if sentence[i] in punctuation:
+                if i == 0 or i == len(sentence) -1:
+                    sentence[i] = ''
+                elif sentence[i-1] in punctuation\
+                        or sentence[i+1] in punctuation:
+                    sentence[i] = ''
                 else:
-                    wrong_str[i] = ' '
-        return ''.join(wrong_str)
+                    sentence[i] = ' '
+        return ''.join(sentence)
 
     def _replace(self, word):
         alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -46,7 +46,7 @@ class Corrector:
 
         for i in range(len(word)):
             try:
-                new_word = word[:i] + word[i+1] + word[i] + word[i+2:]
+                new_word = (word[:i] + word[i+1] + word[i] + word[i+2:]).lower()
                 self._dictionary[new_word]
                 table_replacement[new_word] = new_word
             except (KeyError, IndexError):
@@ -54,14 +54,14 @@ class Corrector:
 
             if len(word) > 1:
                 try:
-                    new_word = word[:i] + word[i+1:]
+                    new_word = (word[:i] + word[i+1:]).lower()
                     self._dictionary[new_word]
                     table_replacement[new_word] = new_word
                 except KeyError:
                     pass
                 try:
-                    left_word = word[:i]
-                    right_word = word[i:]
+                    left_word = word[:i].lower()
+                    right_word = word[i:].lower()
                     if len(left_word) > 0 and len(right_word) > 0:
                         self._dictionary[left_word]
                         self._dictionary[right_word]
@@ -73,15 +73,15 @@ class Corrector:
                 temp = word_by_char[i]
                 word_by_char[i] = letter
                 try:
-                    joined_word = ''.join(word)
-                    self._dictionary[joined_word]
+                    joined_word = ''.join(word).lower()
+                    self._dictionary[joined_word.lower()]
                     table_replacement[joined_word] = joined_word
                 except KeyError:
                     pass
                 word_by_char[i] = temp
                 temp = word
                 try:
-                    new_word = word[:i] + letter + word[i:]
+                    new_word = (word[:i] + letter + word[i:]).lower()
                     self._dictionary[new_word]
                     table_replacement[new_word] = new_word
                 except KeyError:
