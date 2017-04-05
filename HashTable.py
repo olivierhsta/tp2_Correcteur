@@ -40,18 +40,19 @@ class HashTable:
         if presence:
             return self._table[index]
         else:
-            raise KeyError("La clef n'est pas présente dans la table")
+            raise KeyError("La clef " + key + " n'est pas présente dans la table")
 
     def __setitem__(self, key, value):
         present, index = self._search_for(key)
-        self._table[index] = value
+        if not present:
+            self._table[index] = value
 
-    # def __del__(self, key):
-    #     self._table[self._hashing(key)] = self._DELETED
+    def __delitem__(self, key):
+        self._table[self._hashing(key)] = self._DELETED
 
     def __iter__(self):
         for case in self._table:
-            if case is not self._EMPTY:
+            if case is not self._EMPTY and case is not self._DELETED:
                 yield case
 
     def __str__(self):
