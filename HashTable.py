@@ -7,9 +7,6 @@ class HashTable:
     def __init__(self, len_dict):
         self._table = [self._EMPTY] * (len_dict * 2)
 
-    def _is_available(self, index):
-        return self._table[index] in (self._EMPTY, self._DELETED)
-
     def _search_for(self, key):
         i = self._hashing(key)
         avail = None
@@ -36,11 +33,11 @@ class HashTable:
         return counter
 
     def __getitem__(self, key):
-        presence, index = self._search_for(key)
-        if presence:
+        present, index = self._search_for(key)
+        if present:
             return self._table[index]
         else:
-            raise KeyError("La clef " + key + " n'est pas présente dans la table")
+            return self._EMPTY
 
     def __setitem__(self, key, value):
         present, index = self._search_for(key)
@@ -48,7 +45,9 @@ class HashTable:
             self._table[index] = value
 
     def __delitem__(self, key):
-        self._table[self._hashing(key)] = self._DELETED
+        present, index = self._search_for(key)
+        if present:
+            self._table[index] = self._DELETED
 
     def __iter__(self):
         for case in self._table:
