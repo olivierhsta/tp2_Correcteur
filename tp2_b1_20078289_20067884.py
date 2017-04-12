@@ -6,11 +6,14 @@ def read_dict():
     fr = open("dict.txt", 'r')
     dictio = HashTable(len(fr.readlines()))
     fr.seek(0)
-    for ligne in fr:
-        ligne = ligne.strip()
-        dictio[ligne] = ligne
+    alphabet = HashTable(256)           # le nombre de caracteres ASCII
+    for word in fr:
+        word = word.strip()
+        dictio[word] = word
+        for letter in word:
+            alphabet[letter] = letter
     fr.close()
-    return dictio
+    return dictio, alphabet
 
 
 def read_input():
@@ -22,13 +25,12 @@ def read_input():
     fr.close()
 
 
-dictio = read_dict()
+dictio, alphabet = read_dict()
 
-# ajouter les signes de ponctuations dans le dictionnaire pour pouvoir les concerver
+# ajouter les signes de ponctuations dans le dictionnaire pour pouvoir les conserver
 for punctuation in ('.', ',', ':', ';', '!', '?', "'", '"', ' '):
     dictio[punctuation] = punctuation
 
-corrector = Corrector(dictio)
+corrector = Corrector(dictio, alphabet)
 for ligne in read_input():
     print(corrector.correct(ligne))
-

@@ -2,8 +2,9 @@ from HashTable import HashTable
 
 
 class Corrector:
-    def __init__(self, dictionary):
+    def __init__(self, dictionary, alphabet):
         self._dictionary = dictionary
+        self._alphabet = alphabet
 
     def correct(self, wrong_str):
         wrong_str = self._verify_pun(wrong_str)
@@ -49,8 +50,6 @@ class Corrector:
         return temp_sentence
 
     def _replace(self, word):
-        alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         table_replacement = HashTable(54 * len(word) - 2)  # 54n-2 represente la maximum de remplacements possibles pour un mot de longueur n
 
         for i in range(len(word)):
@@ -78,7 +77,7 @@ class Corrector:
                         table_replacement[left_word + ' ' + right_word] = left_word + ' ' + right_word
 
             word_by_char = list(word)
-            for letter in alphabet:
+            for letter in self._alphabet:
 
                 # echanger une lettre avec toutes les lettres de l'alphabet
                 temp = word_by_char[i]

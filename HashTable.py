@@ -8,6 +8,12 @@ class HashTable:
         self._table = [self._EMPTY] * (len_dict * 2)
 
     def _search_for(self, key):
+        """
+        rechercher une cle dans le la hashtable (linear probing)
+        :param key: il n'est pas nécessaire d'avoir la valeur puisque dans notre cas key == value en tout temps
+        :return: tuple (presence, index) où presence est un boolean (true si l'element est dans la table)
+                 et index est l'index de l'element ou l'index où l'element peut etre inseré
+        """
         i = self._hashing(key)
         avail = None
         while True:
