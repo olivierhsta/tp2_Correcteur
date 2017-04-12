@@ -34,3 +34,5 @@ for punctuation in ('.', ',', ':', ';', '!', '?', "'", '"', ' '):
 corrector = Corrector(dictio, alphabet)
 for ligne in read_input():
     print(corrector.correct(ligne))
+
+corrector.correct("Papa est un caca")
