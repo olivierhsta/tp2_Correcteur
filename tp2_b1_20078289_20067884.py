@@ -1,11 +1,13 @@
 from HashTable import HashTable
 from Corrector import Corrector
+import timing
 
 
 def read_dict():
     fr = open("dict.txt", 'r')
     dictio = HashTable(len(fr.readlines()))
     fr.seek(0)
+    # hashtable contenant l'alphabet pour eviter d'avoir deux fois la meme lettre
     alphabet = HashTable(256)           # le nombre de caracteres ASCII
     for word in fr:
         word = word.strip()
@@ -34,5 +36,3 @@ for punctuation in ('.', ',', ':', ';', '!', '?', "'", '"', ' '):
 corrector = Corrector(dictio, alphabet)
 for ligne in read_input():
     print(corrector.correct(ligne))
-
-corrector.correct("Papa est un caca")

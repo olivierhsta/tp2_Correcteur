@@ -6,9 +6,9 @@ class Corrector:
         self._dictionary = dictionary
         self._alphabet = alphabet
 
-    def correct(self, wrong_str):
-        wrong_str = self._verify_pun(wrong_str)
-        word_list = wrong_str.split(' ')
+    def correct(self, str_to_correct):
+        str_to_correct = self._verify_pun(str_to_correct)
+        word_list = str_to_correct.split(' ')
         good_str = ''
         for word in word_list:
             if word != '':
@@ -50,10 +50,10 @@ class Corrector:
         return temp_sentence
 
     def _replace(self, word):
-        table_replacement = HashTable(54 * len(word) - 2)  # 54n-2 represente la maximum de remplacements possibles pour un mot de longueur n
+        # hashtable pour eviter d'avoir 2x le meme mot
+        table_replacement = HashTable(54 * len(word) + 24)  # 54n+24 represente la maximum de remplacements possibles pour un mot de longueur n
 
         for i in range(len(word)):
-
             # essayer d'intervertir toutes les lettres adjacentes
             try:
                 new_word = (word[:i] + word[i + 1] + word[i] + word[i + 2:]).lower()
@@ -63,7 +63,6 @@ class Corrector:
                 pass
 
             if len(word) > 1:
-
                 # essayer de supprimer chacune des lettres du mot
                 new_word = (word[:i] + word[i + 1:]).lower()
                 if self._dictionary[new_word] is not None:
@@ -78,7 +77,6 @@ class Corrector:
 
             word_by_char = list(word)
             for letter in self._alphabet:
-
                 # echanger une lettre avec toutes les lettres de l'alphabet
                 temp = word_by_char[i]
                 word_by_char[i] = letter
@@ -104,4 +102,5 @@ class Corrector:
                     new_word = (word[:i] + letter + word[i:]).lower()
                     if self._dictionary[new_word] is not None:
                         table_replacement[new_word] = new_word
+
         return table_replacement
