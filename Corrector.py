@@ -51,7 +51,8 @@ class Corrector:
 
     def _replace(self, word):
         # hashtable pour eviter d'avoir 2x le meme mot
-        table_replacement = HashTable(54 * len(word) + 24)  # 54n+24 represente la maximum de remplacements possibles pour un mot de longueur n
+        table_replacement = HashTable((2 * len(self._alphabet) + 2) * len(word) +len(self._alphabet) - 2)
+        # (2x+2)n + x-2 = maximum de remplacements possibles pour un mot de longueur n et un alphabet de longueur x
 
         for i in range(len(word)):
             # essayer d'intervertir toutes les lettres adjacentes
