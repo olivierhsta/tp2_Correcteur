@@ -1,6 +1,5 @@
 from HashTable import HashTable
 from Corrector import Corrector
-import timing
 
 
 def read_dict():
